@@ -1,0 +1,29 @@
+﻿
+> frontend@0.1.0 lint
+> eslint
+
+
+C:\Users\USER\Desktop\Sahara-Connect\frontend\print-lint.js
+  1:0  error  Parsing error: File appears to be binary
+
+C:\Users\USER\Desktop\Sahara-Connect\frontend\src\app\batches\join\page.tsx
+  49:22  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\USER\Desktop\Sahara-Connect\frontend\src\app\chat\page.tsx
+  7:10  warning  'Card' is defined but never used         @typescript-eslint/no-unused-vars
+  7:16  warning  'CardContent' is defined but never used  @typescript-eslint/no-unused-vars
+  7:29  warning  'CardHeader' is defined but never used   @typescript-eslint/no-unused-vars
+  7:41  warning  'CardTitle' is defined but never used    @typescript-eslint/no-unused-vars
+
+C:\Users\USER\Desktop\Sahara-Connect\frontend\src\app\profile\page.tsx
+  5:45  warning  'Phone' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\USER\Desktop\Sahara-Connect\frontend\src\sections\AlumniSpotlightSection.tsx
+  77:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\USER\Desktop\Sahara-Connect\frontend\src\sections\BatchNetworkSection.tsx
+  150:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  197:27  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+Γ£û 10 problems (1 error, 9 warnings)
+
