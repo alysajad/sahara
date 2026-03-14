@@ -9,14 +9,24 @@ import DecryptedText from "@/components/ui/DecryptedText";
 export default function HeroSection() {
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background space for global ribbons */}
-      <div className="absolute inset-0 z-0 bg-transparent" />
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{ 
+          backgroundImage: "url('/image.png')", 
+          opacity: 1,
+          filter: "contrast(1.15) saturate(1.2) brightness(1.05)" 
+        }}
+      />
 
-      {/* Dark Gradient Overlay (ensures text readability) */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#131517]/40 via-transparent to-[#131517]/80" />
+      {/* Gradient Overlay tailored for more "pop" but retaining text readability */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#131517]/60 via-[#131517]/20 to-[#131517]/90" />
+      
+      {/* Radial vignette for depth */}
+      <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_center,transparent_0%,#131517_150%)] opacity-90" />
 
       {/* Content */}
-      <Container className="text-center relative z-10">
+      <Container className="text-center relative z-10 w-full drop-shadow-2xl">
         <motion.div
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-[#a4a4a4] text-sm font-medium mb-8"
           initial={{ opacity: 0, y: 20 }}

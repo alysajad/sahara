@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import dynamic from "next/dynamic";
+import Cursor from "@/components/ui/Cursor";
 
 const Ribbons = dynamic(() => import("@/components/ui/Ribbons"), {
   ssr: false,
@@ -34,6 +35,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 {!isAdminDashboard && <Navbar />}
                 {children}
             </div>
+            <Cursor />
         </>
     );
 }
