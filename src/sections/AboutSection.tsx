@@ -7,10 +7,10 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 
 const aboutImages = [
-  "/memories/Acer_Wallpaper_01_3840x2400.jpg",
-  "/memories/Acer_Wallpaper_02_3840x2400.jpg",
-  "/memories/Acer_Wallpaper_03_3840x2400.jpg",
-  "/memories/Acer_Wallpaper_04_3840x2400.jpg",
+  "/memories/crowd.jpeg",
+  "/memories/lights.jpeg",
+  "/memories/main.jpeg",
+  "/memories/singer.jpeg",
 ];
 
 export default function AboutSection() {

@@ -105,8 +105,12 @@ export default function AlumniDirectoryPage() {
           {batches.map((batch) => (
             <Button
               key={batch}
-              variant={selectedBatch === batch ? "default" : "outline"}
-              className={`rounded-full px-6 ${selectedBatch === batch ? "bg-black text-white hover:bg-gray-800" : ""}`}
+              variant="outline"
+              className={`rounded-full px-6 transition-all duration-300 ${
+                selectedBatch === batch
+                  ? "bg-black text-white border-black hover:bg-gray-800"
+                  : "bg-transparent text-gray-700 border-gray-300 hover:bg-gray-100 hover:text-black hover:border-gray-400"
+              }`}
               onClick={() => setSelectedBatch(batch)}
             >
               {batch === "All" ? "All Batches" : `Batch ${batch}`}

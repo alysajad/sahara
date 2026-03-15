@@ -1,0 +1,115 @@
+Sahara Connect - Backend & Database Configurations
+
+This document contains the exact backend, database schema, and admin configurations for the `sahara` project. Use this reference to rebuild the database and connections in your separate UI-only project.
+
+=======================================================
+1. TECH STACK & SERVICES
+=======================================================
+• Database & Authentication: Supabase (@supabase/supabase-js)
+• Storage/Media: Cloudinary (for image & video uploads)
+• Environment Variables Required:
+  - NEXT_PUBLIC_SUPABASE_URL
+  - NEXT_PUBLIC_SUPABASE_ANON_KEY
+  - CLOUDINARY_CLOUD_NAME
+  - CLOUDINARY_API_KEY
+  - CLOUDINARY_API_SECRET
+
+=======================================================
+2. SUPABASE DATABASE SCHEMA (TABLES & COLUMNS)
+=======================================================
+
+TABLE: events
+Purpose: Stores all events, including Sahara Fest and other events.
+Columns:
+  - id (UUID / Primary Key): Auto-generated
+  - title (String): Event Title
+  - tagline (String): Short Catchphrase
+  - description (Text): Detailed description
+  - date (Date/String): Event date
+  - time (Time/String): Event time
+  - venue (String): Event location
+  - category (String): e.g., Music, Sports, Tech
+  - type (String): "Sahara Fest" OR "Other Events"
+  - image_url (String): URL from Cloudinary
+  - is_featured (Boolean): Toggles if it shows on the hero section
+  - is_registration_enabled (Boolean): Toggles registration form visibility
+  - registration_form (JSONB): Array of dynamic fields for the registration form. 
+    Format example: [{ "id": "123", "label": "Full Name", "type": "text", "required": true, "options": [] }]
+
+TABLE: batches
+Purpose: Stores recognized graduation batches.
+Columns:
+  - year (String / Primary Key): e.g., "2024", "2025"
+  - created_at (Timestamp)
+
+TABLE: batch_members
+Purpose: Stores all registered alumni/members.
+Columns:
+  - id (UUID / Primary Key): Auto-generated
+  - name (String): Full Name
+  - batch (String / Foreign Key to batches.year): e.g., "2024"
+  - phone_number (String)
+  - email (String)
+  - course (String)
+  - branch (String)
+  - company (String): Optional
+  - job_title (String): Optional
+  - country (String): Optional
+  - linkedin_url (String): Optional
+  - profile_image_url (String): URL from Cloudinary (Optional)
+
+TABLE: event_registrations
+Purpose: Stores candidate registrations for specific events.
+Columns:
+  - id (UUID / Primary Key): Auto-generated
+  - event_id (UUID / Foreign Key to events.id)
+  - form_data (JSONB): Key-value pair matching the event's `registration_form` labels. (e.g. { "Full Name": "Jane", "Diet": "Vegan" })
+  - created_at (Timestamp)
+
+=======================================================
+3. CLOUDINARY STORAGE CONFIGURATIONS
+=======================================================
+The project bypasses Supabase Storage and uses Cloudinary exclusively for media.
+• API Route: `/api/upload` handles uploads as a stream.
+• Folders used in Cloudinary:
+  - `events` -> For event banner images.
+  - `profiles` -> For member profile pictures.
+
+=======================================================
+4. PAGE CONNECTIVITY & LOGIC
+=======================================================
+
+A) User Facing Pages:
+• `/batches/join` or `?batch=[year]`: 
+  - Allows users to join a batch.
+  - Submits data to `batch_members` table.
+  - Images are uploaded to Cloudinary `profiles` folder.
+
+• `/events/[id]`: 
+  - Fetches event details from `events` table via ID.
+  - If `is_registration_enabled` is true, it renders the dynamic form built in `events.registration_form`.
+  - Submits the inputted candidate details to `event_registrations` with `form_data`.
+
+• `/alumni` or `/members`: 
+  - Fetches and displays data from `batch_members`.
+
+B) Admin App Pages (/admin/*):
+• `/admin/login`: 
+  - Secured using Supabase Authentication `supabase.auth.signInWithPassword`.
+
+• `/admin/events/new`: 
+  - Creates new events in `events` table. 
+  - Features the `EventFormBuilder` which constructs the JSONB array for `registration_form`.
+  - Image uploads hit Cloudinary `events` folder.
+
+• `/admin/members/new`: 
+  - Allows admins to manually inject entries into `batch_members`.
+
+• `/admin/batches`: 
+  - Reads/Writes/Deletes from the `batches` table.
+  - *Logic Note:* If the `batches` table is empty or fails, it dynamically fallback-reads unique `batch` years directly from `batch_members`.
+
+• `/admin/registrations`: 
+  - Fetches data from `event_registrations` table joined with `events(title, registration_form)`.
+  - Extracts table columns dynamically by reading the JSON keys out of `form_data` or `events.registration_form`.
+  - Supports "Delete All" for specific events.
