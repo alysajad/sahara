@@ -127,12 +127,13 @@ export default function Footer() {
             <p className="text-[#F9F6F0]/70 text-sm font-serif italic mb-4">
               Leave your mark. Join our inner circle for exclusive alumni updates and early invites.
             </p>
-            <form className="mt-4 relative" onSubmit={(e) => e.preventDefault()}>
+            <form className="mt-4 relative" onSubmit={(e) => e.preventDefault()} suppressHydrationWarning>
               <input 
                 type="email" 
                 placeholder="Your preferred email address..." 
                 className="w-full bg-transparent border-0 border-b-2 border-[#bb8d62]/50 text-[#F9F6F0] font-caveat text-xl py-2 px-1 focus:ring-0 focus:outline-none focus:border-[#bb8d62] transition-colors placeholder:font-serif placeholder:italic placeholder:text-sm placeholder:text-[#F9F6F0]/30"
                 required
+                suppressHydrationWarning
               />
               <motion.button 
                 whileHover={{ scale: 1.05, color: "#bb8d62" }}
@@ -152,7 +153,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-12 border-t border-[#F9F6F0]/10 flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="text-[#F9F6F0]/40 text-sm font-serif italic">
+          <p className="text-[#F9F6F0]/40 text-sm font-serif italic" suppressHydrationWarning>
             © {new Date().getFullYear()} Sahara Connect. All rights reserved.
           </p>
           <div className="flex items-center gap-3 text-[#F9F6F0]/60 text-sm italic font-serif group">

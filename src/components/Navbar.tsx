@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { name: "Home", href: "/" },
   { name: "Alumni", href: "/alumni" },
   { name: "Events", href: "/events" },
+  { name: "Gallery", href: "/gallery" },
   { name: "About", href: "/about" },
 ];
 

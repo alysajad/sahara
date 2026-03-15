@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Users, Layers, LogOut, CalendarDays, ClipboardList } from "lucide-react";
+import { LayoutDashboard, Users, Layers, LogOut, CalendarDays, ClipboardList, ImageIcon } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export function AdminSidebar() {
@@ -19,6 +19,7 @@ export function AdminSidebar() {
         { label: "Batches", href: "/admin/batches", icon: Layers },
         { label: "Members", href: "/admin/members", icon: Users },
         { label: "Events", href: "/admin/events", icon: CalendarDays },
+        { label: "Gallery", href: "/admin/gallery", icon: ImageIcon },
         { label: "Registrations", href: "/admin/registrations", icon: ClipboardList },
     ];
 
