@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { Container } from "./layout/Container";
 
 const NAV_LINKS = [
   { name: "Home", href: "/" },
@@ -23,7 +22,7 @@ export default function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <Container className="flex justify-between items-center py-5">
+      <div className="w-[95%] xl:w-[98%] max-w-[1920px] mx-auto flex justify-between items-center py-5 relative z-10 px-4 md:px-8">
         <Link href="/">
           <motion.div
             className="flex items-center gap-3 cursor-pointer relative group"
@@ -108,7 +107,7 @@ export default function Navbar() {
             )}
           </button>
         </div>
-      </Container>
+      </div>
 
       {/* Mobile Dropdown Menu */}
       <AnimatePresence>
@@ -120,7 +119,7 @@ export default function Navbar() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="md:hidden overflow-hidden bg-[#F9F6F0] border-t border-[#dcd8d0]"
           >
-            <Container className="py-6 flex flex-col space-y-2">
+            <div className="w-[95%] xl:w-[98%] max-w-[1920px] mx-auto py-6 flex flex-col space-y-2 px-4 md:px-8">
               {NAV_LINKS.map((item, index) => (
                 <motion.div
                   key={item.name}
@@ -151,7 +150,7 @@ export default function Navbar() {
                   Join Us
                 </Link>
               </motion.div>
-            </Container>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

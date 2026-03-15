@@ -45,7 +45,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_center,rgba(249,246,240,0.1)_0%,#F9F6F0_100%)] opacity-60" />
 
       {/* Content */}
-      <Container className="text-center relative z-10 w-full max-w-4xl px-4">
+      <Container className="flex flex-col items-center text-center relative z-10 w-full max-w-[100vw] px-4 overflow-visible">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -81,14 +81,14 @@ export default function HeroSection() {
         </motion.div>
 
         <motion.div
-          className="relative inline-block w-full max-w-screen-lg"
+          className="relative flex flex-col items-center justify-center w-full max-w-[100vw] mx-auto"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
         >
           {/* Dual-tone stylized branding: Charcoal & Sage - Forced to single line */}
-          <h1 className="text-5xl md:text-7xl lg:text-[10rem] font-serif font-bold mb-6 tracking-tight leading-none text-[#333333] whitespace-nowrap overflow-visible">
-            Sahara <span className="text-[#6b8e73] italic">Connect</span>
+          <h1 className="text-5xl md:text-7xl lg:text-[10rem] font-serif font-bold mb-6 tracking-tight leading-none text-[#333333] whitespace-nowrap overflow-visible flex items-center justify-center w-fit mx-auto">
+            Sahara<span className="text-[#6b8e73] italic ml-4 lg:ml-8">Connect</span>
           </h1>
           {/* Hand-drawn underline - Terracotta */}
           <svg
