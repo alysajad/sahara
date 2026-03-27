@@ -150,7 +150,7 @@ export default function EventsPage() {
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${featuredEvent.image_url || "/memories/Acer_Wallpaper_03_3840x2400.jpg"})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-background" />
+        <div className="absolute inset-0 bg-black/40" />
 
         <Container className="relative z-10 flex flex-col justify-end h-full pb-16 pt-32">
           <motion.div
