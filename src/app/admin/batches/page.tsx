@@ -28,39 +28,39 @@ export default function BatchesManagement() {
         setLoading(true);
         setError(null);
         try {
-            // First try to fetch from the explicit batches table
-            const { data: explicitBatches, error: explicitError } = await supabase
+            const { data: explicitBatches } = await supabase
                 .from('batches')
-                .select('*')
-                .order('year', { ascending: false });
+                .select('*');
 
-            // If it succeeds and we have batches, use them
-            if (!explicitError && explicitBatches && explicitBatches.length > 0) {
-                setBatches(explicitBatches);
-                return;
-            }
-
-            // IF batches table doesn't exist or is empty, fallback to discovering from members
             const { data: members, error: membersError } = await supabase
                 .from('batch_members')
                 .select('batch');
 
             if (membersError) throw membersError;
 
-            // Extract unique batch years and sort them
-            const uniqueYears = Array.from(new Set((members || []).map(m => m.batch))).sort().reverse();
+            const batchMap = new Map<string, Batch>();
 
-            const derivedBatches: Batch[] = uniqueYears.map(year => ({
-                year,
-                created_at: new Date().toISOString() // Mock date since it wasn't explicitly created
-            }));
-
-            setBatches(derivedBatches);
-            if (explicitError) {
-                // Optionally warn that we are in fallback mode
-                console.warn("Using fallback batches since 'batches' table failed:", explicitError.message);
+            if (explicitBatches) {
+                explicitBatches.forEach(b => {
+                    batchMap.set(b.year, b);
+                });
             }
 
+            if (members) {
+                members.forEach(m => {
+                    if (m.batch && !batchMap.has(m.batch)) {
+                        batchMap.set(m.batch, {
+                            year: m.batch,
+                            created_at: new Date().toISOString()
+                        });
+                    }
+                });
+            }
+
+            const combinedBatches = Array.from(batchMap.values())
+                .sort((a, b) => b.year.localeCompare(a.year));
+
+            setBatches(combinedBatches);
         } catch (err) {
             console.error("Error fetching batches:", err);
             setError("Failed to load batches.");
@@ -148,11 +148,11 @@ export default function BatchesManagement() {
                         <CardContent className="pt-6">
                             <form onSubmit={handleAddBatch} className="space-y-4">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium text-black">Batch Year</label>
+                                    <label className="text-sm font-medium text-black">enter joining year</label>
                                     <Input
                                         value={newBatchYear}
                                         onChange={(e) => setNewBatchYear(e.target.value)}
-                                        placeholder="e.g. 2025"
+                                        placeholder="enter joining year"
                                         required
                                         className="h-11 bg-white border-gray-200 text-black"
                                     />

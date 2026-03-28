@@ -50,8 +50,8 @@ function AddMemberForm() {
         setLoading(true);
         setError(null);
 
-        if (!formData.name || !formData.batch || !formData.phone_number || !formData.email || !formData.course || !formData.branch) {
-            setError("Please fill in all mandatory fields.");
+        if (!formData.name || !formData.batch || !formData.phone_number || !formData.email || !formData.course || !formData.branch || !formData.profile_image_url) {
+            setError("Please fill in all mandatory fields, including the profile picture.");
             setLoading(false);
             return;
         }
@@ -126,7 +126,7 @@ function AddMemberForm() {
                                     <span className="ml-auto text-xs font-semibold text-red-500 bg-red-50 px-3 py-1 rounded-full uppercase tracking-wider">Required</span>
                                 </div>
                                 <div className="mb-8 flex flex-col items-center">
-                                    <label className="text-sm font-semibold text-black tracking-wide mb-3 block w-full text-center">Profile Picture (Optional)</label>
+                                    <label className="text-sm font-semibold text-black tracking-wide mb-3 block w-full text-center">Profile Picture *</label>
                                     <ImageUpload 
                                         value={formData.profile_image_url}
                                         onChange={(url) => setFormData(prev => ({ ...prev, profile_image_url: url }))}
@@ -148,7 +148,7 @@ function AddMemberForm() {
                                         </div>
                                     </div>
                                     <div className="space-y-2.5">
-                                        <label htmlFor="batch" className="text-sm font-semibold text-black tracking-wide">Batch Year *</label>
+                                        <label htmlFor="batch" className="text-sm font-semibold text-black tracking-wide">enter joining year *</label>
                                         <div className="relative">
                                             <Calendar className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 z-10" />
                                             <Input
@@ -157,7 +157,7 @@ function AddMemberForm() {
                                                 required
                                                 value={formData.batch}
                                                 onChange={handleChange}
-                                                placeholder="e.g. 2024"
+                                                placeholder="enter joining year"
                                                 className="pl-11 h-12 bg-white border-gray-200 text-black font-medium placeholder:text-gray-400 focus-visible:ring-black focus-visible:border-black text-base transition-all shadow-sm"
                                             />
                                         </div>

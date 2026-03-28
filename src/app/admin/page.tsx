@@ -20,31 +20,33 @@ export default function AdminDashboard() {
                     .from('batch_members')
                     .select('*', { count: 'exact', head: true });
 
-                const { count: batchesCount, error: batchesError } = await supabase
-                    .from('batches')
-                    .select('*', { count: 'exact', head: true });
-
-                if (membersError || batchesError) {
+                if (membersError) {
                     throw new Error("Failed to fetch stats");
                 }
 
-                // Fallback: If fetching batches fails (table not created), derive count from unique members' batches
-                let finalBatchesCount = batchesCount || 0;
+                const uniqueBatches = new Set<string>();
 
-                if (batchesError || batchesCount === 0 || batchesCount === null) {
-                    const { data: membersForCount, error: fallbackError } = await supabase
-                        .from('batch_members')
-                        .select('batch');
+                const { data: explicitBatches } = await supabase
+                    .from('batches')
+                    .select('year');
 
-                    if (!fallbackError && membersForCount) {
-                        const uniqueBatches = new Set(membersForCount.map(m => m.batch));
-                        finalBatchesCount = uniqueBatches.size;
-                    }
+                if (explicitBatches) {
+                    explicitBatches.forEach(b => uniqueBatches.add(b.year));
+                }
+
+                const { data: membersForCount } = await supabase
+                    .from('batch_members')
+                    .select('batch');
+
+                if (membersForCount) {
+                    membersForCount.forEach(m => {
+                        if (m.batch) uniqueBatches.add(m.batch);
+                    });
                 }
 
                 setStats({
                     totalMembers: membersCount || 0,
-                    totalBatches: finalBatchesCount,
+                    totalBatches: uniqueBatches.size,
                     loading: false,
                     error: false
                 });

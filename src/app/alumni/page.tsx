@@ -153,7 +153,7 @@ export default function AlumniDirectoryPage() {
                       )}
 
                       <Badge className="absolute top-3 right-3 bg-black/80 backdrop-blur-md border-0">
-                        Class of {person.batch}
+                        Batch of {person.batch}
                       </Badge>
                     </div>
 
@@ -177,21 +177,22 @@ export default function AlumniDirectoryPage() {
                         </div>
                       </div>
 
-                      <Button
-                        className="w-full mt-6 bg-black hover:bg-gray-800 text-white rounded-xl h-12"
-                        asChild
-                        disabled={person.linkedin === "#"}
-                      >
-                        <a
-                          href={person.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 justify-center"
+                      {person.linkedin && person.linkedin !== "#" && (
+                        <Button
+                          className="w-full mt-6 bg-black hover:bg-gray-800 text-white rounded-xl h-12"
+                          asChild
                         >
-                          <Linkedin className="w-4 h-4" />
-                          Connect
-                        </a>
-                      </Button>
+                          <a
+                            href={person.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 justify-center"
+                          >
+                            <Linkedin className="w-4 h-4" />
+                            Connect
+                          </a>
+                        </Button>
+                      )}
                     </CardContent>
                   </Card>
                 </motion.div>

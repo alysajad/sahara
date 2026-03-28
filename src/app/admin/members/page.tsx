@@ -30,6 +30,7 @@ function MembersContent() {
     const initialSearch = searchParams.get('batch') || searchParams.get('search') || "";
 
     const [members, setMembers] = useState<Member[]>([]);
+    const [availableBatches, setAvailableBatches] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState(initialSearch);
@@ -41,13 +42,29 @@ function MembersContent() {
     async function fetchMembers() {
         setLoading(true);
         try {
-            const { data, error } = await supabase
+            const { data: membersData, error } = await supabase
                 .from('batch_members')
                 .select('*')
                 .order('batch', { ascending: false });
 
             if (error) throw error;
-            setMembers(data || []);
+            
+            const { data: explicitBatches } = await supabase
+                .from('batches')
+                .select('year');
+
+            const uniqueBatches = new Set<string>();
+            if (explicitBatches) {
+                explicitBatches.forEach(b => uniqueBatches.add(b.year));
+            }
+            if (membersData) {
+                membersData.forEach(m => {
+                    if (m.batch) uniqueBatches.add(m.batch);
+                });
+            }
+
+            setAvailableBatches(Array.from(uniqueBatches).sort((a, b) => b.localeCompare(a)));
+            setMembers(membersData || []);
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message || "Failed to load members.");
@@ -58,6 +75,21 @@ function MembersContent() {
             setLoading(false);
         }
     }
+
+    const handleBatchChange = async (memberId: string | undefined, newBatch: string) => {
+        if (!memberId) return;
+        try {
+            const { error } = await supabase
+                .from('batch_members')
+                .update({ batch: newBatch })
+                .eq('id', memberId);
+            if (error) throw error;
+            setMembers(prev => prev.map(m => m.id === memberId ? { ...m, batch: newBatch } : m));
+        } catch (err) {
+            console.error("Error updating batch:", err);
+            alert("Failed to update batch.");
+        }
+    };
 
     const handleDelete = async (member: Member) => {
         if (!confirm(`Are you sure you want to remove ${member.name} from the network?`)) return;
@@ -220,10 +252,19 @@ function MembersContent() {
                                         </td>
                                         <td className="px-6 py-4 hidden sm:table-cell">
                                             <div className="flex flex-col items-start gap-1">
-                                                <span className="inline-flex items-center bg-gray-100 text-gray-700 font-medium px-2.5 py-1 rounded-md text-xs border border-gray-200">
-                                                    <GraduationCap className="w-3 h-3 mr-1" />
-                                                    {member.batch}
-                                                </span>
+                                                <div className="inline-flex items-center bg-gray-100 text-gray-700 font-medium px-2.5 py-0.5 rounded-md text-xs border border-gray-200 focus-within:ring-2 focus-within:ring-black">
+                                                    <GraduationCap className="w-3 h-3 mr-1 shrink-0" />
+                                                    <select
+                                                        value={member.batch}
+                                                        onChange={(e) => handleBatchChange(member.id, e.target.value)}
+                                                        className="bg-transparent border-none outline-none focus:ring-0 py-1 pl-0 pr-1 cursor-pointer text-xs font-semibold appearance-none"
+                                                        title="Change Batch"
+                                                    >
+                                                        {availableBatches.map(b => (
+                                                            <option key={b} value={b}>{b}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
                                                 {(member.course || member.branch) && (
                                                     <span className="text-xs text-gray-500">
                                                         {member.course} {member.branch && `- ${member.branch}`}

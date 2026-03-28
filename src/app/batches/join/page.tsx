@@ -156,8 +156,8 @@ function JoinBatchForm() {
     setLoading(true);
     setError(null);
 
-    if (!formData.name || !formData.batch || !formData.phone_number || !formData.email || !formData.course || !formData.branch) {
-      setError("Please fill in all mandatory fields.");
+    if (!formData.name || !formData.batch || !formData.phone_number || !formData.email || !formData.course || !formData.branch || !formData.profile_image_url) {
+      setError("Please fill in all mandatory fields, including your profile picture.");
       setLoading(false);
       return;
     }
@@ -322,7 +322,7 @@ function JoinBatchForm() {
               {/* Profile picture */}
               <div className="mb-8 flex flex-col items-center">
                 <label className="text-xs font-semibold tracking-widest uppercase text-[#6b5c45] mb-3">
-                  Profile Picture <span className="normal-case tracking-normal text-[#b0a898]">(optional)</span>
+                  Profile Picture <span className="text-[#bb8d62]">*</span>
                 </label>
                 <ImageUpload
                   value={formData.profile_image_url}
@@ -336,7 +336,7 @@ function JoinBatchForm() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Field id="name" name="name" label="Full Name" icon={User} required placeholder="E.g. Jane Smith" value={formData.name} onChange={handleChange} />
-                <Field id="batch" name="batch" label="Batch Year" icon={Calendar} required placeholder="E.g. 2024" value={formData.batch} onChange={handleChange} disabled={!!prefilledBatch} />
+                <Field id="batch" name="batch" label="enter joining year" icon={Calendar} required placeholder="enter joining year" value={formData.batch} onChange={handleChange} disabled={!!prefilledBatch} />
                 <Field id="email" name="email" label="Email ID" icon={Mail} required type="email" placeholder="jane@example.com" value={formData.email} onChange={handleChange} />
                 <Field id="phone_number" name="phone_number" label="Phone Number" icon={Phone} required type="tel" placeholder="+91 98765 43210" value={formData.phone_number} onChange={handleChange} />
                 <Field id="course" name="course" label="Course" icon={GraduationCap} required placeholder="E.g. B.Tech, M.Tech" value={formData.course} onChange={handleChange} />
